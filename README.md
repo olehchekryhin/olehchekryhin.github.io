@@ -1,6 +1,6 @@
-# LiveSearch
+## Set up application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.6.
+Clone a project from GitHub to your local machine. Run `npm i` to install all dependencies.
 
 ## Development server
 
