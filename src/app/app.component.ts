@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Subject } from "rxjs";
-import { debounceTime, distinctUntilChanged, switchMap, tap } from "rxjs/operators";
-import { LocationService } from "./services/search.service";
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { LocationService } from './services/search.service';
+import { Locations } from './shared/interfaces';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent {
 
   private locationSubject = new Subject<string>();
 
-  readonly locations$ = this.locationSubject.pipe(
+  readonly locations$: Observable<Locations | []> = this.locationSubject.pipe(
     tap(() => {
       this.loading = true;
     }),
@@ -27,12 +28,12 @@ export class AppComponent {
 
   constructor(private locationService: LocationService) { }
 
-  searchLocations(location: string) {
-    this.searching = true;
+  searchLocations(location: string): void {
+    this.onSearch(true);
     this.locationSubject.next(location.length > 1 && location || '');
   }
 
-  onSearch($event: boolean) {
+  onSearch($event: boolean): void {
     this.searching = $event;
   }
 }

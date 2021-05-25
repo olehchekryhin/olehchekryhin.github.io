@@ -1,36 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl } from "@angular/forms";
-
-enum EventKey {
-  ArrowUp = 'ArrowUp',
-  ArrowDown = 'ArrowDown'
-}
-
-interface Locations {
-  docs: Array<Docs>,
-  isGooglePowered: boolean
-  numFound: number
-}
-
-interface Docs {
-  bookingId: string,
-  city: string,
-  country: string,
-  countryIso: string,
-  iata: string,
-  index: number,
-  isPopular: boolean,
-  lang: string,
-  lat: number,
-  lng: number,
-  locationId: string,
-  name: string,
-  placeKey: string,
-  placeType: string,
-  region: string,
-  searchType: string,
-  ufi: string
-}
+import { FormControl } from '@angular/forms';
+import { Docs, Locations } from '../../shared/interfaces';
+import { EventKey } from '../../shared/enums';
 
 @Component({
   selector: 'app-autocomplete',
@@ -43,38 +14,46 @@ export class AutocompleteComponent {
   @Input() placeholder: string;
   @Input() emptyMessage: string;
   @Output() sendLocation = new EventEmitter<string>();
-  @Output() onSearch = new EventEmitter<boolean>();
+  @Output() sendSearchState = new EventEmitter<boolean>();
 
+  private readonly firstListItem: number = 0;
+  private readonly lastListItem: number;
+  private readonly minSearchLength: number = 1;
   searchField = new FormControl('', null);
   arrowKeyLocation = 0;
 
-  searchLocations(location: string) {
-    this.onSearch.emit(true);
+  constructor() {
+    this.lastListItem = this.locations?.docs?.length - 1;
+  }
+
+  searchLocations(location: string): void {
+    this.sendSearchState.emit(true);
+
     if (location) {
       this.sendLocation.emit(location);
     }
   }
 
-  selectItem(searchValue: string) {
-    this.onSearch.emit(false);
+  selectItem(searchValue: string): void {
+    this.sendSearchState.emit(false);
     this.searchField.patchValue(searchValue);
     this.resetArrowKeyLocation();
   }
 
-  stopSearching() {
-    this.onSearch.emit(false);
+  stopSearching(): void {
+    this.sendSearchState.emit(false);
     this.resetArrowKeyLocation();
   }
 
-  isResultListVisible(): boolean {
-    return this.searching && this.searchField.value.length > 1 && !this.loading;
+  isResultListVisible(searching: boolean, searchFieldValue: string, loading: boolean): boolean {
+    return searching && searchFieldValue.length > this.minSearchLength && !loading;
   }
 
   areLocationsFound(locations): boolean {
     return locations?.numFound;
   }
 
-  selectItemFromList(event: KeyboardEvent) {
+  selectItemFromList(event: KeyboardEvent): void {
     switch (event.key) {
       case EventKey.ArrowUp:
         this.arrowKeyLocation--;
@@ -83,25 +62,27 @@ export class AutocompleteComponent {
         this.arrowKeyLocation++;
         break;
     }
-    if (this.arrowKeyLocation <= 0) {
-      this.arrowKeyLocation = 0;
+    this.setArrowKeyLocation(this.arrowKeyLocation);
+  }
+
+  setArrowKeyLocation(arrowKeyLocation): void {
+    if (arrowKeyLocation <= this.firstListItem) {
+      this.arrowKeyLocation = this.firstListItem;
     }
 
-    if (this.arrowKeyLocation >= this.locations?.docs?.length - 1) {
-      this.arrowKeyLocation = this.locations?.docs?.length - 1;
+    if (arrowKeyLocation >= this.lastListItem) {
+      this.arrowKeyLocation = this.lastListItem;
     }
   }
 
-  entered(locations: Array<Docs>) {
+  onEnter(locations: Array<Docs>): void {
     const enteredLocation = locations.find((l, i) => i === this.arrowKeyLocation).name;
     this.searchField.patchValue(enteredLocation);
-    this.onSearch.emit(false);
+    this.sendSearchState.emit(false);
     this.resetArrowKeyLocation();
   }
 
-  resetArrowKeyLocation() {
-    this.arrowKeyLocation = 0;
+  resetArrowKeyLocation(): void {
+    this.arrowKeyLocation = this.firstListItem;
   }
-
-
 }

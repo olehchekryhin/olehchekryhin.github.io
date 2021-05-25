@@ -8,7 +8,7 @@
         [searching]="searching"
         [loading]="loading"
         (sendLocation)="searchLocations($event)"
-        (onSearch)="onSearch($event)">
+        (sendSearchState)="onSearch($event)">
       </app-autocomplete>
     </form>
   </div>
