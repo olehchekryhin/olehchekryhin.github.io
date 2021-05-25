@@ -1,0 +1,50 @@
+<input
+  type="text"
+  class="form-control"
+  [formControl]="searchField"
+  [placeholder]="placeholder"
+  (input)="searchLocations($event.target.value)"
+  (keydown)="selectItemFromList($event)"
+  (blur)="stopSearching()"
+  (keydown.enter)="entered(locations.docs)"
+>
+<ng-container>
+  <app-result-list
+    *ngIf="areLocationsFound(locations) && isResultListVisible()"
+    [locations]="locations?.docs"
+    [isResultListVisible]="isResultListVisible()"
+    [arrowKeyLocation]="arrowKeyLocation"
+    (onArrowKeyLocation)="arrowKeyLocation = $event"
+    (onSelectItem)="selectItem($event)">
+  </app-result-list>
+<!--  <ul *ngIf="areLocationsFound(locations) && isResultListVisible()" class="list-group">-->
+<!--    <li class="list-group-item p-0"-->
+<!--      *ngFor="let location of locations.docs; let i = index"-->
+<!--      (mouseover)="arrowKeyLocation = i"-->
+<!--      [class.active]="i === arrowKeyLocation">-->
+<!--      <div class="row">-->
+<!--        <div class="col-3">-->
+<!--          <app-badge-->
+<!--            *ngIf="getLabel(location.bookingId) as label"-->
+<!--            [label]="label">-->
+<!--          </app-badge>-->
+<!--        </div>-->
+<!--        <div class="col-9">-->
+<!--          <button-->
+<!--            type="button"-->
+<!--            class="list-group-item list-group-item-action border-0"-->
+<!--            aria-current="true"-->
+<!--            (mousedown)="selectItem(location.name)">-->
+<!--              {{ location.name }}-->
+<!--              <p class="m-0">-->
+<!--                <span *ngIf="location.city">{{ location.city }}, </span> <span *ngIf="location.region">{{ location.region }}, </span> <span *ngIf="location.country">{{ location.country }}</span>-->
+<!--              </p>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </li>-->
+<!--  </ul>-->
+  <ng-container *ngIf="!areLocationsFound(locations) && isResultListVisible()">
+    <app-empty-message [message]="emptyMessage"></app-empty-message>
+  </ng-container>
+</ng-container>

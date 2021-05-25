@@ -1,0 +1,21 @@
+$font-size-base: 14px;
+$gray: #e7e7e7;
+$light: #e7f4fe;
+
+.list-group-item {
+  font-size: $font-size-base;
+  border: none;
+  border-top: 1px solid $gray;
+
+  &:first-child {
+    border-top: none;
+  }
+
+  &.active {
+    background: $light;
+  }
+}
+
+.list-group-item + .list-group-item.active {
+  margin: 0;
+}

@@ -1,0 +1,8 @@
+<span class="badge mt-3 mx-3 my-3"
+  [ngClass]="{
+    'bg-danger': isBadgeColored(label, labels.AIRPORT),
+    'bg-success': isBadgeColored(label, labels.DISTRICT),
+    'bg-primary': isBadgeColored(label, labels.CITY),
+    'bg-info': isBadgeColored(label, labels.TRAIN)
+  }"
+>{{ label }}</span>

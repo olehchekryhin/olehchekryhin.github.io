@@ -1,0 +1,15 @@
+<div class="row justify-content-center py-2">
+  <div class="col-6">
+    <form class="bg-warning p-2">
+      <app-autocomplete
+        emptyMessage="No results found"
+        placeholder="Pick-up location"
+        [locations]="locations$ | async"
+        [searching]="searching"
+        [loading]="loading"
+        (sendLocation)="searchLocations($event)"
+        (onSearch)="onSearch($event)">
+      </app-autocomplete>
+    </form>
+  </div>
+</div>
