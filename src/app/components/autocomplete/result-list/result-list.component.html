@@ -4,13 +4,13 @@
       (mouseover)="arrowKeyLocationChanged(i)"
       [class.active]="i === arrowKeyLocation">
     <div class="row">
-      <div class="col-3">
+      <div class="col-12 col-md-3">
         <app-badge
           *ngIf="getLabel(location.bookingId) as label"
           [label]="label">
         </app-badge>
       </div>
-      <div class="col-9">
+      <div class="col-12 col-md-9 px-4 p-md-0">
         <button
           type="button"
           class="list-group-item list-group-item-action border-0 p-1 bg-transparent"

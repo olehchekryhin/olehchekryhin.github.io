@@ -17,14 +17,9 @@ export class AutocompleteComponent {
   @Output() sendSearchState = new EventEmitter<boolean>();
 
   private readonly firstListItem: number = 0;
-  private readonly lastListItem: number;
   private readonly minSearchLength: number = 1;
   searchField = new FormControl('', null);
   arrowKeyLocation = 0;
-
-  constructor() {
-    this.lastListItem = this.locations?.docs?.length - 1;
-  }
 
   searchLocations(location: string): void {
     this.sendSearchState.emit(true);
@@ -66,20 +61,23 @@ export class AutocompleteComponent {
   }
 
   setArrowKeyLocation(arrowKeyLocation): void {
+    const lastListItem = this.locations?.docs?.length - 1;
+
     if (arrowKeyLocation <= this.firstListItem) {
       this.arrowKeyLocation = this.firstListItem;
     }
 
-    if (arrowKeyLocation >= this.lastListItem) {
-      this.arrowKeyLocation = this.lastListItem;
+    if (arrowKeyLocation >= lastListItem) {
+      this.arrowKeyLocation = lastListItem;
     }
   }
 
-  onEnter(locations: Array<Docs>): void {
+  onEnterLocation(e: Event, locations: Array<Docs>) {
     const enteredLocation = locations.find((l, i) => i === this.arrowKeyLocation).name;
-    this.searchField.patchValue(enteredLocation);
     this.sendSearchState.emit(false);
+    this.searchField.patchValue(enteredLocation);
     this.resetArrowKeyLocation();
+    e.preventDefault();
   }
 
   resetArrowKeyLocation(): void {

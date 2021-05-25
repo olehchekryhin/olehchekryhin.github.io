@@ -6,7 +6,7 @@
   (input)="searchLocations($event.target.value)"
   (keydown)="selectItemFromList($event)"
   (blur)="stopSearching()"
-  (keydown.enter)="onEnter(locations.docs)"
+  (keydown.enter)="onEnterLocation($event, locations.docs)"
 >
 <ng-container>
   <app-result-list
