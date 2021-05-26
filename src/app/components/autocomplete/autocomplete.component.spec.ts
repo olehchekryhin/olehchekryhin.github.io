@@ -121,7 +121,9 @@ describe('AutocompleteComponent', () => {
 
     spyOn(component.sendSearchState, 'emit');
     spyOn(component, 'resetArrowKeyLocation');
-    component.onEnter(docs);
+    component.onEnterLocation({
+      preventDefault(): void {}
+    } as Event, docs);
 
     expect(component.searchField.value).toBe('Amsterdam');
     expect(component.sendSearchState.emit).toHaveBeenCalledWith(false);
