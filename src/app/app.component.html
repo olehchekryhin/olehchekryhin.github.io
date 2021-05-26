@@ -1,9 +1,9 @@
 <div class="row justify-content-center py-2">
-  <div class="col-12 col-md-6">
+  <div class="col-12 col-md-6 col-lg-5">
     <form class="bg-warning p-2">
       <app-autocomplete
         emptyMessage="No results found"
-        placeholder="Pick-up location"
+        placeholder="Pick-up Location"
         [locations]="locations$ | async"
         [searching]="searching"
         [loading]="loading"

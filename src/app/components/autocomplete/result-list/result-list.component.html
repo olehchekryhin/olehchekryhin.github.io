@@ -1,5 +1,6 @@
 <ul class="list-group border border-dark">
   <li class="list-group-item p-0 border-top"
+      [tabindex]="i"
       *ngFor="let location of locations; let i = index"
       (mouseover)="arrowKeyLocationChanged(i)"
       [class.active]="i === arrowKeyLocation">
@@ -10,7 +11,7 @@
           [label]="label">
         </app-badge>
       </div>
-      <div class="col-12 col-md-9 px-4 p-md-0">
+      <div class="col-12 col-md-9 px-4 pb-2 p-md-0">
         <button
           type="button"
           class="list-group-item list-group-item-action border-0 p-1 bg-transparent"
